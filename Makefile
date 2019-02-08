@@ -1,8 +1,8 @@
 include Makefile.mk
 
 NAME=cfn-secret-provider
-S3_BUCKET_PREFIX=binxio-public
-AWS_REGION=eu-central-1
+S3_BUCKET_PREFIX=sandbox.public.cloud.cit.cornell.edu
+AWS_REGION=us-east-1
 ALL_REGIONS=$(shell printf "import boto3\nprint('\\\n'.join(map(lambda r: r['RegionName'], boto3.client('ec2').describe_regions()['Regions'])))\n" | python | grep -v '^$(AWS_REGION)$$')
 
 help:
@@ -43,7 +43,7 @@ deploy-all-regions: deploy
 			s3://$(S3_BUCKET_PREFIX)-$$REGION/lambdas/$(NAME)-latest.zip \
 			--acl public-read; \
 	done
-		
+
 
 undeploy:
 	@for REGION in $(ALL_REGIONS); do \
@@ -71,7 +71,7 @@ venv: requirements.txt
 	. ./venv/bin/activate && \
 	pip3 --quiet install --upgrade pip && \
 	pip3 --quiet install -r requirements.txt
-	
+
 clean:
 	rm -rf venv target src/*.pyc tests/*.pyc
 
@@ -113,4 +113,3 @@ demo:
 delete-demo:
 	aws cloudformation delete-stack --stack-name $(NAME)-demo
 	aws cloudformation wait stack-delete-complete  --stack-name $(NAME)-demo
-

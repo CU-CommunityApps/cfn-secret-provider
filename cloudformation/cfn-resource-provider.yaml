@@ -4,7 +4,7 @@ Description: CloudFormation Secret Provider
 Parameters:
   S3BucketPrefix:
     Type: String
-    Default: 'binxio-public'
+    Default: sandbox.public.cloud.cit.cornell.edu
   CFNCustomProviderZipFileName:
     Type: String
     Default: 'lambdas/cfn-secret-provider-0.13.2.zip'
